@@ -33,13 +33,13 @@ ALLOWED_HOSTS = [
 
 DJANGO_TELEGRAMBOT = {
 
-    'MODE': 'POLLING',  # (Optional [str]) # The default value is WEBHOOK,
+    'MODE': 'WEBHOOK',  # (Optional [str]) # The default value is WEBHOOK,
     # otherwise you may use 'POLLING'
     # NB: if use polling you must provide to run
     # a management command that starts a worker
 
-    'WEBHOOK_SITE': 'https://mywebsite.com',
-    'WEBHOOK_PREFIX': '/prefix',
+    'WEBHOOK_SITE': 'https://ortniter.pythonanywhere.com',
+    'WEBHOOK_CERTIFICATE': '/home/ortniter/cert.pem',
     'STRICT_INIT': True,
 
     'BOTS': [
