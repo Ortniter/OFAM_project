@@ -39,7 +39,7 @@ DJANGO_TELEGRAMBOT = {
     # a management command that starts a worker
 
     'WEBHOOK_SITE': 'https://ortniter.pythonanywhere.com',
-    'WEBHOOK_CERTIFICATE': '/home/ortniter/cert.pem',
+    'WEBHOOK_CERTIFICATE': 'cert.pem',
     'STRICT_INIT': True,
 
     'BOTS': [
