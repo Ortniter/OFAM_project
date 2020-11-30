@@ -149,7 +149,7 @@ DJANGO_TELEGRAMBOT = {
     # 'WEBHOOK_PREFIX': '/prefix',  # (Optional[str]) # If this value is specified,
     # a prefix is added to webhook url
 
-    # 'WEBHOOK_CERTIFICATE' : 'cert.pem', # If your site use self-signed
+    'WEBHOOK_CERTIFICATE' : 'cert.pem', # If your site use self-signed
     # certificate, must be set with location of your public key
     # certificate.(More info at https://core.telegram.org/bots/self-signed )
 
