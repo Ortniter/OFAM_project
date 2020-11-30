@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('ofam_api/', include('ofam_api.urls')),
+    # path('ofam_api/', include('ofam_api.urls')),
     re_path(r'^', include('django_telegrambot.urls')),
 ]
 
