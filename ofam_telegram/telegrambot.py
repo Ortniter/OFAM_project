@@ -12,24 +12,21 @@ from .models import ShopProductModel, MainMenuButtonModel, TelegramUser
 
 
 def start(update, context):
-    # reply_markup = creat_menu_markup(model=MainMenuButtonModel, main_menu=True)
-    #
-    # telegram_user, _ = TelegramUser.objects.update_or_create(
-    #     chat_id=update.message.from_user.id, defaults={'chat_id': update.message.from_user.id,
-    #                                                    'username': update.message.from_user.username,
-    #                                                    'first_name': update.message.from_user.first_name,
-    #                                                    'language_code': update.message.from_user.language_code}
-    # )
-    # text = get_data_from_json()['welcome_text']
-    # context.bot.send_message(update.message.chat_id,
-    #                          text=text,
-    #                          reply_markup=reply_markup,
-    #                          parse_mode=ParseMode.HTML)
-    #
-    # telegram_user.save()
+    reply_markup = creat_menu_markup(model=MainMenuButtonModel, main_menu=True)
+
+    telegram_user, _ = TelegramUser.objects.update_or_create(
+        chat_id=update.message.from_user.id, defaults={'chat_id': update.message.from_user.id,
+                                                       'username': update.message.from_user.username,
+                                                       'first_name': update.message.from_user.first_name,
+                                                       'language_code': update.message.from_user.language_code}
+    )
+    text = get_data_from_json()['welcome_text']
     context.bot.send_message(update.message.chat_id,
-                             text='hello',
+                             text=text,
+                             reply_markup=reply_markup,
                              parse_mode=ParseMode.HTML)
+
+    telegram_user.save()
 
 
 def inline_shop(update, context):
