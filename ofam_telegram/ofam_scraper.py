@@ -3,13 +3,18 @@ from selenium import webdriver
 from time import sleep
 from bs4 import BeautifulSoup
 import requests
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 with Display():
     driver = webdriver.Firefox()
+    wait = WebDriverWait(driver, 10)
 
     try:
         driver.get("https://www.ofam.org.ua/ua/shop")
         sleep(10)
+        wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, '.js-store-load-more-btn > table:nth-child(1)')))
         driver.find_element_by_css_selector('.js-store-load-more-btn > table:nth-child(1)').click()
         sleep(10)
 
