@@ -26,6 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'www.ofam.cloud',
+    'localhost'
 ]
 
 # Application definition

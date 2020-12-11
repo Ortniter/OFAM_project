@@ -20,8 +20,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('ofam_api/', include('ofam_api.urls')),
-    path('1270547075:AAHb_afunhhW2CWQrZ84NWYCbvHVz-AoYNk/', include('ofam_telegram.urls')),
+    path('ofam_api/', include('ofam_api.urls')),
+    path('', include('ofam_telegram.urls')),
     re_path(r'^', include('django_telegrambot.urls')),
 ]
 

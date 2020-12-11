@@ -1,4 +1,5 @@
 import json
+import csv
 import os
 from random import choice
 
@@ -14,6 +15,13 @@ def get_data_from_json():
     with open(f'{folder_path}/static/menu_data.json', 'r') as json_file:
         menu_data_dict = json.load(json_file)
         return menu_data_dict
+
+
+def get_shop_products():
+    with open(f'{folder_path}/ofm_shop_items.csv', 'r') as csv_file:
+        csv_reader = csv.reader(csv_file, delimiter=',')
+        for row in csv_reader:
+            yield row
 
 
 def get_random_sticker():
