@@ -37,7 +37,7 @@ def creat_menu_markup(model, main_menu):
         keyboard = first_three_buttons + keyboard
     keyboard = [keyboard[i:i + 2] for i in range(0, len(keyboard), 2)]
     if not main_menu:
-        keyboard.append([KeyboardButton(text='Назад')])
+        keyboard.append([KeyboardButton(text='Назад 🤖')])
     reply_markup = ReplyKeyboardMarkup(keyboard=keyboard, resize_keyboard=True)
     return reply_markup
 

@@ -4,11 +4,15 @@ from django_telegrambot.apps import DjangoTelegramBot
 from .utils import creat_menu_markup, send_message_or_photo, get_models_and_its_querysets, sections, \
     get_data_from_json, send_sticker_with_markup, create_shop_markup
 
-from telegram.ext import CommandHandler, InlineQueryHandler, MessageHandler, Filters
+from telegram.ext import CommandHandler, InlineQueryHandler, MessageHandler, Filters, ConversationHandler
 from telegram import InlineQueryResultArticle, InputTextMessageContent, InlineKeyboardButton, InlineKeyboardMarkup, \
     ParseMode
 
 from .models import ShopProductModel, MainMenuButtonModel, TelegramUser
+
+models_and_its_querysets = get_models_and_its_querysets()
+all_detail_titles = [title for queryset in models_and_its_querysets.values() for title in queryset]
+custom_main_menu_buttons = MainMenuButtonModel.objects.all().values_list('title', flat=True)
 
 
 def start(update, context):
@@ -64,17 +68,14 @@ def help(update, context):
     context.bot.sendMessage(update.message.chat_id, text='Help!')
 
 
-def event(update, context):
-    models_and_its_querysets = get_models_and_its_querysets()
-    all_detail_titles = [title for queryset in models_and_its_querysets.values() for title in queryset]
-    custom_main_menu_buttons = MainMenuButtonModel.objects.all().values_list('title', flat=True)
+def main_sections_handler(update, context):
+    model = sections[update.message.text]
+    reply_markup = creat_menu_markup(model=model, main_menu=False)
+    send_sticker_with_markup(update, context, reply_markup)
 
-    if update.message.text in sections:
-        model = sections[update.message.text]
-        reply_markup = creat_menu_markup(model=model, main_menu=False)
-        send_sticker_with_markup(update, context, reply_markup)
 
-    elif update.message.text in all_detail_titles:
+def detail_titles_handler(update, context):
+    if update.message.text in all_detail_titles:
         for model, queryset in models_and_its_querysets.items():
             if update.message.text in queryset:
                 model = model
@@ -88,7 +89,9 @@ def event(update, context):
                                       reply_markup)
                 break
 
-    elif update.message.text in custom_main_menu_buttons:
+
+def custom_main_menu_handler(update, context):
+    if update.message.text in custom_main_menu_buttons:
         model_instance = MainMenuButtonModel.objects.get(title=update.message.text)
         if update.message.text == 'Магазин 🛍':
             reply_markup = create_shop_markup()
@@ -97,15 +100,24 @@ def event(update, context):
                 [[InlineKeyboardButton(text=model_instance.detail_url_text, url=model_instance.detail_url)]])
         send_message_or_photo(context, update, model_instance.image_url, model_instance.description, reply_markup)
 
-    elif update.message.text == 'Назад':
-        reply_markup = creat_menu_markup(model=MainMenuButtonModel, main_menu=True)
-        send_sticker_with_markup(update, context, reply_markup)
+
+def back_button_handler(update, context):
+    reply_markup = creat_menu_markup(model=MainMenuButtonModel, main_menu=True)
+    send_sticker_with_markup(update, context, reply_markup)
 
 
 def main():
     dp = DjangoTelegramBot.dispatcher
 
+    sections_re = '|'.join(sections)
+    detail_titles_re = '|'.join(all_detail_titles)
+    custom_main_menu_sections_re = '|'.join(custom_main_menu_buttons)
+
+    dp.add_handler(MessageHandler(Filters.regex(f'^({sections_re})$'), main_sections_handler))
+    dp.add_handler(MessageHandler(Filters.regex(f'^({detail_titles_re})$'), detail_titles_handler))
+    dp.add_handler(MessageHandler(Filters.regex(f'^({custom_main_menu_sections_re})$'), custom_main_menu_handler))
+    dp.add_handler(MessageHandler(Filters.regex(f'^Назад 🤖$'), back_button_handler))
+
     dp.add_handler(CommandHandler('start', start))
     dp.add_handler(CommandHandler('help', help))
-    dp.add_handler(MessageHandler(Filters.text, event))
     dp.add_handler(InlineQueryHandler(inline_shop))
