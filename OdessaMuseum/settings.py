@@ -141,7 +141,7 @@ MEDIA_URL = '/media/'
 
 DJANGO_TELEGRAMBOT = {
     'MODE': 'WEBHOOK',  # POLLING
-    # 'WEBHOOK_SITE': 'https://www.ofam.cloud',
+    'WEBHOOK_SITE': 'https://www.ofam.cloud',
     'STRICT_INIT': True,
     'BOTS': [
         {
