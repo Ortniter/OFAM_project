@@ -8,7 +8,7 @@ from django.http import JsonResponse, HttpResponse
 from .models import ShopProductModel
 from .utils import get_shop_products
 
-bot_token = '1270547075:AAHb_afunhhW2CWQrZ84NWYCbvHVz-AoYNk'
+bot_token = '1207325258:AAHnQUKZH82bX8IWrcG2UGrV43JNprOZEYA'
 
 
 @csrf_exempt
